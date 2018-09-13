@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
-import { makeStateKey } from '@angular/platform-browser';
-import { mapToExpression } from '@angular/compiler/src/render3/view/util';
 import { createTitle } from '@angular/platform-browser/src/browser/title';
 
 @Component({
@@ -11,15 +9,18 @@ import { createTitle } from '@angular/platform-browser/src/browser/title';
 })
 
 export class AppComponent implements OnInit {
-    title = 'restful-api';
-    showMap: Map<number, boolean>;
+    title = 'Restful Tasks CRUD';
     tasks = [];
+    newTask = {
+        name: "",
+        desc: ""
+    };
 
     constructor(private _httpService: HttpService) {}
 
     ngOnInit(){
-        this.showMap = new Map();
-        // this.getTasksFromService();
+        this.getTasksFromService();
+        
     }
 
     getTasksFromService() {
@@ -27,15 +28,7 @@ export class AppComponent implements OnInit {
    	    observable.subscribe((data: any[]) => {
             console.log("Got our tasks!", data);
             this.tasks = data;
-            this.tasks.forEach((task) => {
-                this.showMap.set(task._id, false); // set every value of task._id equals to false
-            });
-       });
+            console.log("This is the data:", data)
+        });
     }
-
-    changeState(id) {
-        const newVal = !this.showMap.get(id); // get the value located at the location specified by id
-        this.showMap.set(id, newVal); // set the boolean to its negate state
-    }
-
 }

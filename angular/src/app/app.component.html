@@ -1,24 +1,25 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-    <h1>
-        Welcome to {{ title }}!
-    </h1>
+<div class="container wrapper">
+    <!-- Add new task -->
+    <app-root></app-root>
+    <div class="container form-group">
+        <h2>New Task</h2>
+        <form (submit) = "onSubmit()">
+            <input class="form-control" type="text" value="Task Title" name="title" [(ngModel)]="newTask.title">
+            <input class="form-control" type="text" value="Task Description" name="desc" [(ngModel)]="newTask.desc">
+            <input type="submit">
+        </form>
+    </div>
+    <!-- Task List -->
+    <div class="container">
+        <h2>Task List</h2>
+        <div class="container" *ngFor="">
 
-<div class="container">
-	<button (click) = "getTasksFromService()">Get all Tasks</button>
-    <div *ngFor="let task of tasks">
-        <p> 
-            {{ task.title }} 
-            <button (click)="changeState(task._id)"> {{ showMap.get(task._id)? 'hide':'show' }} </button>
-        </p>
-        <div *ngIf="showMap.get(task._id)">
-            <p>Description: {{ task.description }}</p>
-            <p>Completed: {{ task.completed }}</p>
         </div>
-        <hr>
-    
     </div>
 </div>
+
+
 
 
 
