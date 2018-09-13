@@ -1,0 +1,29 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+    <h1>
+        Welcome to {{ title }}!
+    </h1>
+
+<div class="container">
+	<button (click) = "getTasksFromService()">Get all Tasks</button>
+    <div *ngFor="let task of tasks">
+        <p> 
+            {{ task.title }} 
+            <button (click)="changeState(task._id)"> {{ showMap.get(task._id)? 'hide':'show' }} </button>
+        </p>
+        <div *ngIf="showMap.get(task._id)">
+            <p>Description: {{ task.description }}</p>
+            <p>Completed: {{ task.completed }}</p>
+        </div>
+        <hr>
+
+    <p *ngIf="loggedIn">You are logged in!</p>
+    <p *ngFor="let snack of snacks">{{snack}}</p>
+    
+    </div>
+</div>
+
+
+
+
+
