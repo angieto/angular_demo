@@ -39,12 +39,3 @@ export class AppComponent implements OnInit {
     }
 
 }
-
-// val = arr.get(3) <==> val = arr[3]
-
-// arr[3] = val <==> arr.set(3, val)
-
-// map = Map.new<int, boolean>
-// for task in tasks
-//     map.set(task._id, false);
-// Richard write this!!!
