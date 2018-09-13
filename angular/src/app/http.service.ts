@@ -8,14 +8,23 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class HttpService {
+
     constructor(private _http: HttpClient) { 
-        this.getTasksFromService();
-        this.getOneTask();
     }
+
     getTasksFromService() {
         return this._http.get('/tasks');
     }
-    getOneTask() {
-        return this._http.get('/tasks/5b9703aab75d4d124cd10db1');
+
+    makeTask(newTask) {
+        return this._http.post('/tasks', newTask);
+    }
+
+    getTask(id:String) {
+        return this._http.get('/tasks/'+id);
+    }
+
+    editTask(selectedTask) {
+        return this._http.put('/tasks/update/:id', selectedTask);
     }
 }
