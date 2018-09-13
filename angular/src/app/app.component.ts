@@ -11,16 +11,16 @@ import { createTitle } from '@angular/platform-browser/src/browser/title';
 export class AppComponent implements OnInit {
     tasks = [];
     newTask: object; 
+    edittedTask: object;
     selectedTask: object;
     id: String;
+    edit: boolean = false;
 
     constructor(private _httpService: HttpService) {}
 
     ngOnInit(){
-        this.newTask = {
-            title: "",
-            description: ""
-        };
+        this.newTask = { title: "", description: "" };
+        this.edittedTask = { title: "", description: "" };
         this.getTasksFromService();
     }
 
@@ -42,16 +42,18 @@ export class AppComponent implements OnInit {
     }
 
     getTask(id) {
-        let observable = this._httpService.getTask(this.id);
+        let observable = this._httpService.getTask(id);
         observable.subscribe(selectedTask => {
-            console.log("This is the task", selectedTask);
+            console.log("This is the selected task", selectedTask);
         })
     }
 
-    // editTask() {
-    //     let observable = this._httpService.editTask(this.selectedTask);
-    //     observable.subscribe(selectedTask => {
-    //         console.log("Task is updated!", selectedTask);
-    //     });
+    editTask(id) {
+        this.edit = !this.edit;
+        let observable = this._httpService.getTask(id);
+        observable.subscribe(selectedTask => {
+            this.edittedTask = { title: selectedTask['title'], description: selectedTask['description'] };
+            console.log("Editing task...", selectedTask);
+        });
     }
 }
