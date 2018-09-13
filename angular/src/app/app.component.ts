@@ -47,3 +47,4 @@ export class AppComponent implements OnInit {
 // map = Map.new<int, boolean>
 // for task in tasks
 //     map.set(task._id, false);
+// Richard write this!!!
