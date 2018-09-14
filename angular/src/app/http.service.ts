@@ -9,8 +9,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class HttpService {
 
-    constructor(private _http: HttpClient) { 
-    }
+    constructor(private _http: HttpClient) { }
 
     getTasksFromService() {
         return this._http.get('/tasks');
@@ -20,13 +19,15 @@ export class HttpService {
         return this._http.post('/tasks', newTask);
     }
 
-    getTask(id:String) {
-        return this._http.get('/tasks/'+id);
+    showEdit(taskId) {
+        return this._http.get('/tasks/'+taskId);
     }
 
-    editTask(selectedTask) {
-        return this._http.put('/tasks/update/:id', selectedTask);
+    updateTask(task) {
+        return this._http.put('/tasks/update/'+task._id, task);
     }
 
-    
+    deleteTask(taskId) {
+        return this._http.delete('/tasks/delete/'+taskId);
+    }
 }
