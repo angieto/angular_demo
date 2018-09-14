@@ -10,6 +10,7 @@ import { createTitle } from '@angular/platform-browser/src/browser/title';
 
 export class AppComponent implements OnInit {
     tasks = [];
+    showMap: Map<number, boolean>;
     newTask: object; 
     selectedTask: object;
     id: String;
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
 
     constructor(private _httpService: HttpService) {}
 
-    ngOnInit(){
+    ngOnInit() {
+        this.showMap = new Map();
         this.newTask = { title: "", description: "" };
         this.resetTask();
         this.getTasksFromService();
@@ -45,10 +47,18 @@ export class AppComponent implements OnInit {
 
     getTasksFromService() {
    	    let observable = this._httpService.getTasksFromService();
-   	    observable.subscribe((data: any[]) => {
-            this.tasks = data;
-            console.log("This is the data:", data)
+   	    observable.subscribe((tasks: any[]) => {
+            this.tasks = tasks;
+            console.log("This is the data:", tasks);
+            this.tasks.forEach((task) => {
+                this.showMap.set(task._id, false); // set every value of task._id equals to false
+            });
         });
+    }
+
+    changeState(id) {
+        const newVal = !this.showMap.get(id); // get the value located at the location specified by id
+        this.showMap.set(id, newVal); // set the boolean to its negate state
     }
 
     // display edit form
