@@ -28,6 +28,6 @@ export class HttpService {
     }
 
     deleteTask(taskId) {
-        return this._http.delete('/tasks/delete/'+taskId);
+        return this._http.delete('/tasks/delete/'+ taskId);
     }
 }

@@ -13,13 +13,14 @@ export class AppComponent implements OnInit {
     newTask: object; 
     selectedTask: object;
     id: String;
-    // errors;
+    makeTaskErrors;
+    updateTaskErrors;
 
     constructor(private _httpService: HttpService) {}
 
     ngOnInit(){
         this.newTask = { title: "", description: "" };
-        this.resetTask;
+        this.resetTask();
         this.getTasksFromService();
     }
 
@@ -29,18 +30,22 @@ export class AppComponent implements OnInit {
 
     makeTask() {
         let observable = this._httpService.makeTask(this.newTask);
-        observable.subscribe(newTask => {
-            console.log("Task made!", newTask); 
-            // if ('errors' in newTask) this.errors = newTask; // validation errors
-            this.getTasksFromService(); // update most up-to-dated list
+        observable.subscribe((newTask: any) => {
+            if (newTask.errors) {
+                this.makeTaskErrors = newTask.errors; 
+                console.log("ERRORS ", this.makeTaskErrors);// validation errors
+            } else {
+                console.log("Task made!", newTask); 
+                this.getTasksFromService(); // update most up-to-dated list
+            }
         });
+        this.makeTaskErrors = undefined; // reset errors back to undefined
         this.resetTask(); // set input back to empty strings
     }
 
     getTasksFromService() {
    	    let observable = this._httpService.getTasksFromService();
    	    observable.subscribe((data: any[]) => {
-            console.log("Got our tasks!", data);
             this.tasks = data;
             console.log("This is the data:", data)
         });
@@ -51,7 +56,7 @@ export class AppComponent implements OnInit {
         // this.target = taskId; so taskId could be retrieved outside of the for loop
         let observable = this._httpService.showEdit(taskId);
         observable.subscribe(targettedTask => {
-            this.selectedTask = targettedTask;
+            this.selectedTask = targettedTask; // assign the targetted task value to this.selectedTask
             console.log("Editing task...", targettedTask);
         });
     }
@@ -60,17 +65,24 @@ export class AppComponent implements OnInit {
     updateTask() {
         console.log("selected task: " + this.selectedTask);
         let observable = this._httpService.updateTask(this.selectedTask);
-        observable.subscribe(updatedTask => {
-            console.log("Task updated!", updatedTask);
-            this.getTasksFromService(); // reloading the task list
+        observable.subscribe((updatedTask: any) => {
+            if (updatedTask.errors) {
+                this.updateTaskErrors = updatedTask.errors; 
+                console.log("ERRORS ", this.updateTaskErrors); // validation errors
+            } else {
+                console.log("Task updated!", updatedTask);
+                this.getTasksFromService(); // reloading the task list
+            }
         })
+        this.updateTaskErrors = undefined;
         this.selectedTask = undefined; // set it to a falsy statement so ngIf won't work
     }
 
-    deleteTask() {
-        let observable = this._httpService.deleteTask(this.selectedTask);
-        observable.subscribe(data => {
-            console.log(data);
+    deleteTask(taskId) {
+        let observable = this._httpService.deleteTask(taskId);
+        console.log(this.selectedTask, "selected Task");
+        observable.subscribe(deletedTask => {
+            console.log("Task deleted", deletedTask);
             this.getTasksFromService();
         })
     }

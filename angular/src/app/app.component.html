@@ -2,9 +2,10 @@
     <!-- Add new task -->
     <div class="container border border-secondary rounded col-6 mt-3 text-center p-5" style="background-color:Cornsilk;">
         <h2>New Task</h2>
-        <!-- <p *ngIf="errors">{{errors}}</p> -->
+        <ng-container *ngIf="makeTaskErrors">
+            <p class="text-danger">{{ makeTaskErrors['title']['message'] }}</p>
+        </ng-container> 
         <form (submit)="makeTask()">
-            <p> {{ newTask | json }} </p>
             <p><input class="form-control" type="text" placeholder="Task Title" name="newTask.title" [(ngModel)]="newTask.title"></p>
             <p><input class="form-control" type="text" placeholder="Task Description" name="newTask.description" [(ngModel)]="newTask.description"></p>
             <input class="btn btn-primary" type="submit" value="Make Task">
@@ -24,12 +25,17 @@
 
         </div>
         <!-- If 'edit', prepopulate the edit form with current info -->
+        <ng-container *ngIf="updateTaskErrors">
+            <p class="text-danger">{{ updateTaskErrors['title']['message'] }}</p>
+        </ng-container> 
+        
         <div *ngIf="selectedTask" class="container border border-success rounded col-11 mt-3 pb-3" style="background-color:HoneyDew;">
             <form (submit)="updateTask()">
-            <input class="form-control" type="text" placeholder="{{ selectedTask.title }}" name="selectedTask.title" [(ngModel)]="selectedTask.title">
-            <input class="form-control" type="text" placeholder="{{ selectedTask.description }}" name="selectedTask.description" [(ngModel)]="selectedTask.description">
-            <button class="btn btn-success mx-2" type="submit">Update</button>
+                <input class="form-control" type="text" placeholder="{{ selectedTask.title }}" name="selectedTask.title" [(ngModel)]="selectedTask.title">
+                <input class="form-control" type="text" placeholder="{{ selectedTask.description }}" name="selectedTask.description" [(ngModel)]="selectedTask.description">
+                <button class="btn btn-success mx-2" type="submit">Update</button>
             </form>
+
             <!-- Cancel button -->
             <!--<button (click)="cancelTask(task._id)" class="btn btn-danger mx-2" type="submit">Cancel</button>-->
         </div>
